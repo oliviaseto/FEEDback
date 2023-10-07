@@ -6,7 +6,8 @@
 </head>
 <body>
     <h1>Welcome to your Admin Profile</h1>
-    <p>Welcome, you are logged in as {{ user.username }}</p>
+    <p>Username: {{ request.user.username }}</p>
+    <p>Name: {{ request.user.name }}</p>
     <a href="{% url 'feedback:logout' %}">Logout</a>
 </body>
 </html>

@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+# from django.contrib.auth.decorators import login_required
 from django.views import View
 from .models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,10 +13,12 @@ class CompleteGoogleOAuth2View(View):
             if user_type == 'admin':
                 user, created = User.objects.get_or_create(email=google_account.extra_data['email'])
                 user.username = google_account.extra_data['email']
+                user.name = google_account.extra_data['name']
                 user.is_admin = True
             else:
                 user, created = User.objects.get_or_create(email=google_account.extra_data['email'])
                 user.username = google_account.extra_data['email']
+                user.name = google_account.extra_data['name']
                 user.is_user = True
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             user.save()
