@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Profile</title>
+</head>
+<body>
+    <h1>Welcome to your Admin Profile</h1>
+    <p>Username: {{ request.user.username }}</p>
+    <p>Name: {{ request.user.name }}</p>
+    <a href="{% url 'feedback:logout' %}">Logout</a>
+</body>
+</html>
