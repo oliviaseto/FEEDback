@@ -6,9 +6,22 @@
     <p>Welcome, you are logged in as {{ user.username }}</p>
     {% if user.is_user %}
       <p>You are currently using a USER account.</p>
+      <h1>Restaurant List</h1>
+      <ul>
+          {% for restaurant in restaurants %}
+              <li><a href="{% url 'restaurant_detail' restaurant.id %}">{{ restaurant.name }}</a></li>
+          {% endfor %}
+      </ul>
     {% endif %} 
     {% if user.is_admin %}
       <p>You are currently using an ADMIN account.</p>
+      <h1>Pending Reviews</h1>
+      <ul>
+          {% for review in pending_reviews %}
+              <li>{{ review.content }} <a href="{% url 'approve_review' review.id %}">Approve</a></li>
+          {% endfor %}
+      </ul>
+      <a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
     {% endif %} 
     <a href="{% url 'feedback:logout' %}">Logout</a>
   {% else %}

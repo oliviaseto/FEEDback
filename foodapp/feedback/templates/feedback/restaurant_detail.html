@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ restaurant.name }}</title>
+</head>
+<body>
+    <h1>{{ restaurant.name }}</h1>
+    
+    <h2>Reviews:</h2>
+    {% if reviews %}
+        <ul>
+            {% for review in reviews %}
+                <li>{{ review.content }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif }
+
+    {% if user.is_authenticated %}
+        <h2>Submit a Review:</h2>
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="content" rows="4" cols="50"></textarea><br>
+            <input type="submit" value="Submit Review">
+        </form>
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> to submit a review.</p>
+    {% endif %}
+</body>
+</html>
+
