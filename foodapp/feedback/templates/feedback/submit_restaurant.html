@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Submit New Restaurant</title>
-</head>
 <body>
-    <h1>Submit New Restaurant</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit Restaurant">
-    </form>
+    {% if user.is_admin %}
+        <h1>Submit New Restaurant</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit Restaurant">
+        </form>
+    {% endif %} 
 </body>
 </html>
