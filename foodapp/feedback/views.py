@@ -51,6 +51,12 @@ class AdminProfileView(LoginRequiredMixin, View):
 
     def get(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
+
+        if request.user.is_admin:
+            print(request.user.is_admin)  # Add this line for debugging
+            pending_reviews = Review.objects.filter(not_approved=True)
+            context['pending_reviews'] = pending_reviews
+
         return render(request, self.template_name, context)
 
 def restaurant_list(request):
@@ -61,8 +67,10 @@ def submit_review(request, restaurant_id):
     if request.method == 'POST':
         user = request.user
         content = request.POST.get('content')
+        approved = False  # By default, a user-submitted review is not approved
+        not_approved = True  # By default, a user-submitted review is pending approval
         restaurant = Restaurant.objects.get(pk=restaurant_id)
-        Review.objects.create(restaurant=restaurant, user=user, content=content)
+        Review.objects.create(restaurant=restaurant, user=user, content=content, approved=approved, not_approved=not_approved)
 
     return redirect('restaurant_detail', restaurant_id=restaurant_id)
 
@@ -83,12 +91,13 @@ def submit_restaurant(request):
 
 def approve_review(request, review_id):
     if not request.user.is_admin:
-        return redirect('feedback/restaurant_list')  # Redirect non-admins to a different page
+        return redirect('feedback:restaurant_list')  # Redirect non-admins to a different page
 
     review = Review.objects.get(pk=review_id)
     review.approved = True
+    review.not_approved = False  # Mark the review as approved
     review.save()
-    return redirect('admin_review_management')
+    return redirect('admin_profile')
 
 def restaurant_detail(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)  # Use get_object_or_404

@@ -13,11 +13,14 @@
       <h1>Pending Reviews</h1>
       <ul>
           {% for review in reviews %}
-            {% if review.not_approved %}
-            <li>{{ review.content }} <a href="{% url 'approve_review' review.id %}">Approve</a></li>
-            {% endif %}
+              {% if review.not_approved %}
+                <li>{{ review.restaurant }}</li>
+                <li>{{ review.content }}</li>
+                <li><a href="{% url 'approve_review' review.id %}">Approve</a></li>
+              {% endif %}
           {% endfor %}
       </ul>
+      <a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a>
       <a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
     {% endif %} 
     <a href="{% url 'feedback:logout' %}">Logout</a>
