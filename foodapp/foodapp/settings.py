@@ -162,7 +162,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # Activate Django-Heroku.
-# Use this code to avoid the psycopg2 / django-heroku error!  
+# Use this code to avoid the psycopg2 / django-heroku error!
 # Do NOT import django-heroku above!
 try:
     if 'HEROKU' in os.environ:

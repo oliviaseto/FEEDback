@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn foodapp.wsgi
+web: gunicorn project-a-19.wsgi
