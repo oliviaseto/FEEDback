@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath foodapp foodapp.wsgi
+web: gunicorn foodapp.wsgi
