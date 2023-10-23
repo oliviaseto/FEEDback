@@ -4,3 +4,4 @@ sqlparse
 gunicorn
 django-heroku
 dj-database-url
+allauth
