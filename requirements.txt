@@ -4,3 +4,5 @@ sqlparse
 gunicorn
 django-heroku
 dj-database-url
+django-allauth
+whitenoise
