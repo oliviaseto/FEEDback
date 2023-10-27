@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-45ajy*3vxwuogc$u5o=jty%bar=0gz9$(%v1&!#%x56fpoqkda
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+#<<<<<<< admin_submission_approval
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'project-a-19-uva-f01ffe4504e2.herokuapp.com']
 
 # Application definition
 
@@ -150,4 +151,20 @@ STATIC_URL = '/static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+#<<<<<<< admin_submission_approval: just line 155
+#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+# Activate Django-Heroku.
+# Use this code to avoid the psycopg2 / django-heroku error!
+# Do NOT import django-heroku above!
+try:
+    if 'HEROKU' in os.environ:
+        import django_heroku
+        django_heroku.settings(locals())
+except ImportError:
+    found = False
