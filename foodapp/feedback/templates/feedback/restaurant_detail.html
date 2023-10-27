@@ -1,0 +1,36 @@
+{% load socialaccount %}
+<html>
+<head>
+    <title>{{ restaurant.name }}</title>
+</head>
+<body>
+    <h1>{{ restaurant.name }}</h1>
+    <h2>Reviews:</h2>
+    {% if reviews %}
+        <ul>
+            {% for review in reviews %}
+                {% if review.approved and review.restaurant == restaurant %}
+                    <li>{{ review.content }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews yet.</p>
+    {% endif %}
+    
+    {% if user.is_user %}
+    <h2>Submit a Review:</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <input type="submit" value="Submit Review">
+    </form>
+    {% endif %}
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <a href="{% url 'feedback:restaurant_list' %}">Go Back to Restaurant List</a>
+</body>
+</html>

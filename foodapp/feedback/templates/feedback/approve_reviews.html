@@ -1,0 +1,23 @@
+{% load socialaccount %}
+<html>
+<body>
+    <h1>Pending Reviews</h1>
+    {% for review in pending_reviews %}
+        <p><strong>Restaurant:</strong> {{ review.restaurant }}</p>
+        <p><strong>Username:</strong> {{ review.user.username }}</p>
+        <p><strong>Review content:</strong> {{ review.content }}</p>
+        <form method="post" action="{% url 'feedback:approve_reviews' %}">
+            {% csrf_token %}
+            <input type="hidden" name="review_id" value="{{ review.id }}">
+            <button type="submit">Approve</button>
+        </form>
+        <form method="post" action="{% url 'feedback:reject_review' %}">  <!-- Add a form for rejection -->
+            {% csrf_token %}
+            <input type="hidden" name="review_id" value="{{ review.id }}">
+            <button type="submit">Reject</button>
+        </form>
+    {% endfor %}
+    <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
+    <li><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
+</body>
+</html>

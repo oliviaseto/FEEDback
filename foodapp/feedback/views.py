@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
-# from django.contrib.auth.decorators import login_required
-from django.views import View
-from .models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+from django.http import HttpResponseRedirect
+from .models import User, Restaurant, Review
+from .forms import RestaurantForm, ReviewForm
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):
@@ -49,12 +51,115 @@ class AdminProfileView(LoginRequiredMixin, View):
 
     def get(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
-        return render(request, self.template_name, context)
-    
-# @login_required
-# def register_user(request):
-#     return redirect('user_profile')
 
-# @login_required
-# def register_admin(request):
-#     return redirect('admin_profile')
+        if request.user.is_admin:
+            pending_reviews = Review.objects.filter(not_approved=True)
+            context['pending_reviews'] = pending_reviews
+
+        return render(request, self.template_name, context)
+
+def restaurant_list(request):
+    restaurants = Restaurant.objects.all()
+    return render(request, 'feedback/restaurant_list.html', {'restaurants': restaurants})
+
+def restaurant_detail(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
+    reviews = Review.objects.filter(restaurant=restaurant, approved=True)
+    message = ""
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.restaurant = restaurant
+            review.approved = False  # By default, not approved
+            review.not_approved = True  # By default, pending approval
+            review.save()
+            message = "Your review has been submitted and is pending admin approval."
+            form = ReviewForm()
+        else:
+            message = "Review submission failed. Please correct the errors."
+    else:
+        form = ReviewForm()
+
+    context = {
+        'restaurant': restaurant,
+        'reviews': reviews,
+        'user': request.user,
+        'review_form': form,  
+        'message': message,
+    }
+
+    return render(request, 'feedback/restaurant_detail.html', context)
+
+def submit_restaurant(request):
+    if not request.user.is_admin:
+        return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect non-admins to a different page
+
+    if request.method == 'POST':
+        form = RestaurantForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect to the restaurant list
+
+    else:
+        form = RestaurantForm()
+
+    return render(request, 'feedback/submit_restaurant.html', {'form': form})
+
+def approve_reviews(request):
+    if not request.user.is_admin:
+        return redirect('feedback:restaurant_list') 
+
+    pending_reviews = Review.objects.filter(not_approved=True)
+
+    if request.method == 'POST':
+        review_id = request.POST.get('review_id')  
+        review = Review.objects.get(pk=review_id)
+        review.approved = True
+        review.not_approved = False
+        review.save()
+
+        # Redirect to the same page 
+        return redirect('feedback:approve_reviews')
+
+    context = {
+        'pending_reviews': pending_reviews,
+    }
+
+    return render(request, 'feedback/approve_reviews.html', context)
+
+def reject_review(request):
+    if not request.user.is_admin:
+        return redirect('feedback:restaurant_list')  
+
+    if request.method == 'POST':
+        review_id = request.POST.get('review_id')  
+        review = Review.objects.get(pk=review_id)
+        review.is_rejected = True
+        review.not_approved = False
+        review.save()
+
+        # Redirect to the same page 
+        return redirect('feedback:approve_reviews')  
+
+    return redirect('feedback:approve_reviews') 
+
+class ReviewListView(View):
+    template_name = 'feedback/review_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        user = self.request.user
+        pending_reviews = Review.objects.filter(user=user, not_approved=True)
+        approved_reviews = Review.objects.filter(user=user, approved=True)
+        rejected_reviews = Review.objects.filter(user=user, is_rejected=True)
+        context['pending_reviews'] = pending_reviews
+        context['approved_reviews'] = approved_reviews
+        context['rejected_reviews'] = rejected_reviews
+        return context
+
+    def get(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)

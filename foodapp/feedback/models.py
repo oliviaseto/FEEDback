@@ -15,3 +15,19 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+class Restaurant(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Review(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    approved = models.BooleanField(default=False)  
+    not_approved = models.BooleanField(default=True) 
+    is_rejected = models.BooleanField(default=False)  
+
+    def __str__(self):
+        return f"Review for {self.restaurant.name} by {self.user.username}"
