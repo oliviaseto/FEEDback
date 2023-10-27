@@ -8,7 +8,8 @@
     <h1>Welcome to your User Profile!</h1>
     <p>Username: {{ request.user.username }}</p>
     <p>Name: {{ request.user.name }}</p>
-    <a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a>
-    <a href="{% url 'feedback:logout' %}">Logout</a>
+    <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
+    <li><a href="{% url 'feedback:review_list' %}">View Your Reviews</a></li>
+    <li><a href="{% url 'feedback:logout' %}">Logout</a></li>
 </body>
 </html>
