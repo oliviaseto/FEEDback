@@ -7,6 +7,7 @@
     {% if user.is_user %}
       <p>You are currently using a USER account.</p>
       <a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a>
+      <a href="{% url 'feedback:review_list' %}">View Your Reviews</a> 
     {% endif %} 
     {% if user.is_admin %}
       <p>You are currently using an ADMIN account.</p>

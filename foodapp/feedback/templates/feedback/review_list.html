@@ -1,0 +1,16 @@
+<html>
+<body>
+<h1>Your Reviews</h1>
+<h2>Pending Reviews</h2>
+{% for review in pending_reviews %}
+    <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+    <strong>Review content:</strong> {{ review.content }}</p>
+{% endfor %}
+
+<h2>Approved Reviews</h2>
+{% for review in approved_reviews %}
+    <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+    <strong>Review content:</strong> {{ review.content }}</p>
+{% endfor %}
+</body>
+</html>

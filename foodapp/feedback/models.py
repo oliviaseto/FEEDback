@@ -27,6 +27,7 @@ class Review(models.Model):
     content = models.TextField()
     approved = models.BooleanField(default=False)  
     not_approved = models.BooleanField(default=True) 
+    is_rejected = models.BooleanField(default=False)  
 
     def __str__(self):
         return f"Review for {self.restaurant.name} by {self.user.username}"

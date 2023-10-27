@@ -53,7 +53,6 @@ class AdminProfileView(LoginRequiredMixin, View):
         context = self.get_context_data(**kwargs)
 
         if request.user.is_admin:
-            print(request.user.is_admin)  # Add this line for debugging
             pending_reviews = Review.objects.filter(not_approved=True)
             context['pending_reviews'] = pending_reviews
 
@@ -130,3 +129,19 @@ def approve_reviews(request):
     }
 
     return render(request, 'feedback/approve_reviews.html', context)
+
+class ReviewListView(View):
+    template_name = 'feedback/review_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        user = self.request.user
+        pending_reviews = Review.objects.filter(user=user, not_approved=True)
+        approved_reviews = Review.objects.filter(user=user, approved=True)
+        context['pending_reviews'] = pending_reviews
+        context['approved_reviews'] = approved_reviews
+        return context
+
+    def get(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
