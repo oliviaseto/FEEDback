@@ -14,4 +14,5 @@ urlpatterns = [
     path('submit-restaurant/', views.submit_restaurant, name='submit_restaurant'),
     path('approve-reviews/', views.approve_reviews, name='approve_reviews'), 
     path('review-list/', views.ReviewListView.as_view(), name='review_list'),
+    path('reject-review/', views.reject_review, name='reject_review'),
 ]

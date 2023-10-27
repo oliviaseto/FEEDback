@@ -2,15 +2,33 @@
 <body>
 <h1>Your Reviews</h1>
 <h2>Pending Reviews</h2>
-{% for review in pending_reviews %}
-    <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
-    <strong>Review content:</strong> {{ review.content }}</p>
-{% endfor %}
+{% if pending_reviews %}
+    {% for review in pending_reviews %}
+        <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+        <strong>Review content:</strong> {{ review.content }}</p>
+    {% endfor %}
+{% else %}
+        <p>No pending reviews.</p>
+{% endif %}
 
 <h2>Approved Reviews</h2>
-{% for review in approved_reviews %}
-    <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
-    <strong>Review content:</strong> {{ review.content }}</p>
-{% endfor %}
+{% if approved_reviews %}
+    {% for review in approved_reviews %}
+        <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+        <strong>Review content:</strong> {{ review.content }}</p>
+    {% endfor %}
+{% else %}
+    <p>No approved reviews.</p>
+{% endif %}
+
+<h2>Rejected Reviews</h2>
+{% if rejected_reviews %}
+    {% for review in rejected_reviews %}
+        <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+        <strong>Review content:</strong> {{ review.content }}</p>
+    {% endfor %}
+{% else %}
+    <p>No rejected reviews.</p>
+{% endif %}
 </body>
 </html>

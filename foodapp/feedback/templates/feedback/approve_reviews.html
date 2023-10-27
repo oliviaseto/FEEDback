@@ -11,6 +11,11 @@
             <input type="hidden" name="review_id" value="{{ review.id }}">
             <button type="submit">Approve</button>
         </form>
+        <form method="post" action="{% url 'feedback:reject_review' %}">  <!-- Add a form for rejection -->
+            {% csrf_token %}
+            <input type="hidden" name="review_id" value="{{ review.id }}">
+            <button type="submit">Reject</button>
+        </form>
     {% endfor %}
     <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
     <li><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>

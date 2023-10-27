@@ -109,19 +109,18 @@ def submit_restaurant(request):
 
 def approve_reviews(request):
     if not request.user.is_admin:
-        return redirect('feedback:restaurant_list')  # Redirect non-admins to a different page
+        return redirect('feedback:restaurant_list') 
 
     pending_reviews = Review.objects.filter(not_approved=True)
 
     if request.method == 'POST':
-        # Handle review approval
-        review_id = request.POST.get('review_id')  # Assuming you have a hidden field with review_id in your template
+        review_id = request.POST.get('review_id')  
         review = Review.objects.get(pk=review_id)
         review.approved = True
         review.not_approved = False
         review.save()
 
-        # Redirect to the same page or another appropriate URL
+        # Redirect to the same page 
         return redirect('feedback:approve_reviews')
 
     context = {
@@ -129,6 +128,22 @@ def approve_reviews(request):
     }
 
     return render(request, 'feedback/approve_reviews.html', context)
+
+def reject_review(request):
+    if not request.user.is_admin:
+        return redirect('feedback:restaurant_list')  
+
+    if request.method == 'POST':
+        review_id = request.POST.get('review_id')  
+        review = Review.objects.get(pk=review_id)
+        review.is_rejected = True
+        review.not_approved = False
+        review.save()
+
+        # Redirect to the same page 
+        return redirect('feedback:approve_reviews')  
+
+    return redirect('feedback:approve_reviews') 
 
 class ReviewListView(View):
     template_name = 'feedback/review_list.html'
@@ -138,8 +153,10 @@ class ReviewListView(View):
         user = self.request.user
         pending_reviews = Review.objects.filter(user=user, not_approved=True)
         approved_reviews = Review.objects.filter(user=user, approved=True)
+        rejected_reviews = Review.objects.filter(user=user, is_rejected=True)
         context['pending_reviews'] = pending_reviews
         context['approved_reviews'] = approved_reviews
+        context['rejected_reviews'] = rejected_reviews
         return context
 
     def get(self, request, **kwargs):
