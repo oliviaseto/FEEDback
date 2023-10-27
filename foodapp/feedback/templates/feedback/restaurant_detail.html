@@ -7,13 +7,12 @@
     <h1>{{ restaurant.name }}</h1>
     <h2>Reviews:</h2>
     {% if reviews %}
-        <ul>
-            {% for review in reviews %}
-                {% if review.approved and review.restaurant == restaurant %}
-                    <li>{{ review.content }}</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
+        {% for review in reviews %}
+            {% if review.approved and review.restaurant == restaurant %}
+                <p><strong>Username:</strong> {{ review.user.username }}<br>
+                <strong>Review content:</strong> {{ review.content }}</p>
+            {% endif %}
+        {% endfor %}
     {% else %}
         <p>No reviews yet.</p>
     {% endif %}

@@ -9,6 +9,8 @@ class RestaurantForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['content']
+        fields = ['content'] 
 
-    content = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['content'].label = '' 
