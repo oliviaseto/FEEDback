@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpResponseRedirect
 from .models import User, Restaurant, Review
-from .forms import RestaurantForm
+from .forms import RestaurantForm, ReviewForm
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):
@@ -63,16 +63,35 @@ def restaurant_list(request):
     restaurants = Restaurant.objects.all()
     return render(request, 'feedback/restaurant_list.html', {'restaurants': restaurants})
 
-def submit_review(request, restaurant_id):
-    if request.method == 'POST':
-        user = request.user
-        content = request.POST.get('content')
-        approved = False  # By default, a user-submitted review is not approved
-        not_approved = True  # By default, a user-submitted review is pending approval
-        restaurant = Restaurant.objects.get(pk=restaurant_id)
-        Review.objects.create(restaurant=restaurant, user=user, content=content, approved=approved, not_approved=not_approved)
+def restaurant_detail(request, restaurant_id):
+    restaurant = get_object_or_404(Restaurant, pk=restaurant_id)
+    reviews = Review.objects.filter(restaurant=restaurant, approved=True)
+    message = ""
 
-    return redirect('restaurant_detail', restaurant_id=restaurant_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.restaurant = restaurant
+            review.approved = False  # By default, not approved
+            review.not_approved = True  # By default, pending approval
+            review.save()
+            message = "Your review has been submitted and is pending admin approval."
+        else:
+            message = "Review submission failed. Please correct the errors."
+    else:
+        form = ReviewForm()
+
+    context = {
+        'restaurant': restaurant,
+        'reviews': reviews,
+        'user': request.user,
+        'review_form': form,  
+        'message': message,
+    }
+
+    return render(request, 'feedback/restaurant_detail.html', context)
 
 def submit_restaurant(request):
     if not request.user.is_admin:
@@ -97,16 +116,4 @@ def approve_review(request, review_id):
     review.approved = True
     review.not_approved = False  # Mark the review as approved
     review.save()
-    return redirect('admin_profile')
-
-def restaurant_detail(request, restaurant_id):
-    restaurant = get_object_or_404(Restaurant, pk=restaurant_id)  # Use get_object_or_404
-    reviews = Review.objects.filter(restaurant=restaurant, approved=True)
-
-    context = {
-        'restaurant': restaurant,
-        'reviews': reviews,
-        'user': request.user,
-    }
-
-    return render(request, 'feedback/restaurant_detail.html', context)
+    return redirect('feedback/index.html')

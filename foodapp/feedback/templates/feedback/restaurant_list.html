@@ -7,7 +7,7 @@
         {% for restaurant in restaurants %}
             <li>{{ restaurant.name }}</li>
             {% if user.is_user %}
-                <a href="{% url 'feedback:restaurant_detail' restaurant.id %}">View Restaurant Details</a>
+                <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a>
             {% endif %}
         {% empty %}
             <p>No restaurants available.</p>

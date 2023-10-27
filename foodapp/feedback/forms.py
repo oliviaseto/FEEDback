@@ -11,6 +11,4 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['content']
 
-    def __init__(self, *args, **kwargs):
-        super(ReviewForm, self).__init__(*args, **kwargs)
-        self.fields['content'].widget = forms.Textarea(attrs={'rows': 4, 'cols': 50})
+    content = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))

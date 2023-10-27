@@ -16,7 +16,7 @@
               {% if review.not_approved %}
                 <li>{{ review.restaurant }}</li>
                 <li>{{ review.content }}</li>
-                <li><a href="{% url 'approve_review' review.id %}">Approve</a></li>
+                <li><a href="{% url 'feedback:approve_review' review.id %}">Approve</a></li>
               {% endif %}
           {% endfor %}
       </ul>
