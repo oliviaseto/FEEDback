@@ -10,20 +10,11 @@
     {% endif %} 
     {% if user.is_admin %}
       <p>You are currently using an ADMIN account.</p>
-      <h1>Pending Reviews</h1>
-      <ul>
-          {% for review in reviews %}
-              {% if review.not_approved %}
-                <li>{{ review.restaurant }}</li>
-                <li>{{ review.content }}</li>
-                <li><a href="{% url 'feedback:approve_review' review.id %}">Approve</a></li>
-              {% endif %}
-          {% endfor %}
-      </ul>
-      <a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a>
-      <a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
+      <li><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></li>
+      <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
+      <li><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
     {% endif %} 
-    <a href="{% url 'feedback:logout' %}">Logout</a>
+    <li><a href="{% url 'feedback:logout' %}">Logout</a>
   {% else %}
     <li><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/user/">Login As or Create New User Account</a></li>
     <li><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/admin/">Login As or Create New Admin Account</a></li>

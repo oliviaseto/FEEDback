@@ -108,12 +108,25 @@ def submit_restaurant(request):
 
     return render(request, 'feedback/submit_restaurant.html', {'form': form})
 
-def approve_review(request, review_id):
+def approve_reviews(request):
     if not request.user.is_admin:
         return redirect('feedback:restaurant_list')  # Redirect non-admins to a different page
 
-    review = Review.objects.get(pk=review_id)
-    review.approved = True
-    review.not_approved = False  # Mark the review as approved
-    review.save()
-    return redirect('feedback/index.html')
+    pending_reviews = Review.objects.filter(not_approved=True)
+
+    if request.method == 'POST':
+        # Handle review approval
+        review_id = request.POST.get('review_id')  # Assuming you have a hidden field with review_id in your template
+        review = Review.objects.get(pk=review_id)
+        review.approved = True
+        review.not_approved = False
+        review.save()
+
+        # Redirect to the same page or another appropriate URL
+        return redirect('feedback:approve_reviews')
+
+    context = {
+        'pending_reviews': pending_reviews,
+    }
+
+    return render(request, 'feedback/approve_reviews.html', context)
