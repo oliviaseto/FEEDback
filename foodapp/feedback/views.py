@@ -84,12 +84,37 @@ def restaurant_detail(request, restaurant_id):
     else:
         form = ReviewForm()
 
+    # map url construction 
+    # has to follow this format: 
+    # "https://www.google.com/maps/embed/v1/place?key=API_KEY&q=Space+Needle,Seattle+WA"
+
+    name_list = restaurant.name.split(" ")
+    name_for_url = ''
+    for part in range(len(name_list)):
+        if part != len(name_list):
+            name_for_url += name_list[part] + '+'
+        else:
+            name_for_url += name_list[part] + ','
+
+    city_list = restaurant.city.split(" ")
+    city_for_url = ''
+    for part in range(len(city_list)):
+        if part == 0:
+            name_for_url += city_list[part] 
+        else:
+            name_for_url += name_list[part] + '+'
+
+    state = restaurant.state
+
+    map_url = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M&q=' + name_for_url + city_for_url + '+' + state
+    
     context = {
         'restaurant': restaurant,
         'reviews': reviews,
         'user': request.user,
         'review_form': form,  
         'message': message,
+        'map_url': map_url
     }
 
     return render(request, 'feedback/restaurant_detail.html', context)
