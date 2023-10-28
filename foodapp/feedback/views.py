@@ -7,6 +7,9 @@ from django.http import HttpResponseRedirect
 from .models import User, Restaurant, Review
 from .forms import RestaurantForm, ReviewForm
 import urllib.request, json 
+from django.core import serializers
+from django.core.serializers import serialize
+from django.http import JsonResponse
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):
@@ -61,7 +64,16 @@ class AdminProfileView(LoginRequiredMixin, View):
 
 def restaurant_list(request):
     restaurants = Restaurant.objects.all()
-    return render(request, 'feedback/restaurant_list.html', {'restaurants': restaurants})
+    # context = {
+    #     'restaurants': Restaurant.objects.all(),
+    #     'restaurants_json': serializers.serialize('json', restaurants)
+    # }
+    context = {
+        'restaurants': Restaurant.objects.all(),
+        'restaurants_json': serialize('json', restaurants, use_natural_primary_keys=True)
+    }
+
+    return render(request, 'feedback/restaurant_list.html', context)
 
 def restaurant_detail(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, pk=restaurant_id)

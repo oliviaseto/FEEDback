@@ -1,7 +1,44 @@
 {% load socialaccount %}
 <html>
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M&callback=initMap" async defer></script>
+</head>
 <body>
     <h1>Restaurant List</h1>
+    <div id="map" style="height: 400px; width: 50%;"></div>
+
+    <script >
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: { lat: 38.0318784, lng: -78.5103819 }, // Default center of the map
+                styles: [
+                    {
+                        featureType: "poi",
+                        elementType: "all",
+                        stylers: [{ visibility: "off" }],
+                    },
+                ]
+            });
+    
+            var restaurants = {{ restaurants_json|safe }};
+            restaurants.forEach(function(restaurant) {
+                console.log(restaurant);
+                var restaurantLatLng = {
+                    lat: parseFloat(restaurant['fields']['lat']),
+                    lng: parseFloat(restaurant['fields']['lng'])
+                };
+                console.log(restaurantLatLng);
+                new google.maps.Marker({
+                    position: restaurantLatLng,
+                    map: map,
+                    label: restaurant['fields']['name'],
+                });
+            });
+        }
+    window.initMap = initMap;
+    </script>
+    
     <h2>Restaurants:</h2>
     <ul>
         {% for restaurant in restaurants %}
