@@ -6,6 +6,7 @@ from django.views import View
 from django.http import HttpResponseRedirect
 from .models import User, Restaurant, Review
 from .forms import RestaurantForm, ReviewForm
+import urllib.request, json 
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):
@@ -100,7 +101,50 @@ def submit_restaurant(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
         if form.is_valid():
-            form.save()
+            name = form.cleaned_data['name']
+            street_address = form.cleaned_data['street_address']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+
+            street_address_for_url = ''
+            street_address_list = street_address.split(" ")
+            for part in range(len(street_address_list)-1):
+                if part != len(street_address_list)-1:
+                    street_address_for_url += street_address_list[part] + "+"
+                else:
+                    street_address_for_url += street_address_list[part] + ","
+
+            city_for_url = ''
+            city_list = city.split(" ")
+            for part in range(len(city_list)-1):
+                if part != len(city_list)-1:
+                    city_for_url += "+" + city_list[part]
+                else:
+                    city_for_url += "+" + city_list[part] + ","
+
+            state_for_url = "+" + state
+
+            location_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + street_address_for_url + city_for_url + state_for_url + '&key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M'
+            # has to follow this format: 
+            # https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M
+
+            lat = 0.0
+            lng = 0.0
+            with urllib.request.urlopen(location_url) as url:
+                data = json.load(url)
+                lat_lng_data = data["results"][0]["geometry"]["location"]
+                lat = lat_lng_data['lat']
+                lng = lat_lng_data['lng']
+
+            restaurant = form.save(commit=False)
+            restaurant.name = name
+            restaurant.street_address = street_address
+            restaurant.city = city
+            restaurant.state = state
+            restaurant.lat = lat
+            restaurant.lng = lng
+            restaurant.save()
+
             return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect to the restaurant list
 
     else:

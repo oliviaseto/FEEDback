@@ -16,7 +16,13 @@ class User(AbstractUser):
         return self.username
 
 class Restaurant(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True, default="Rice Hall")
+    street_address = models.CharField(max_length=100, default="85 Engineer's Way")
+    city = models.CharField(max_length=100, default="Charlottesville")
+    state = models.CharField(max_length=100, default="VA")
+
+    lat = models.DecimalField(max_digits=9, decimal_places=6, default=38.0316188)
+    lng = models.DecimalField(max_digits=9, decimal_places=6, default=78.51084589999999)
 
     def __str__(self):
         return self.name
