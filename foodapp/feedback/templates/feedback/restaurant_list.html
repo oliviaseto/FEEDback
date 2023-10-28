@@ -23,12 +23,10 @@
     
             var restaurants = {{ restaurants_json|safe }};
             restaurants.forEach(function(restaurant) {
-                console.log(restaurant);
                 var restaurantLatLng = {
                     lat: parseFloat(restaurant['fields']['lat']),
                     lng: parseFloat(restaurant['fields']['lng'])
                 };
-                console.log(restaurantLatLng);
                 new google.maps.Marker({
                     position: restaurantLatLng,
                     map: map,

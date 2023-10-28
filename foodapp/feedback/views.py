@@ -72,7 +72,7 @@ def restaurant_list(request):
         'restaurants': Restaurant.objects.all(),
         'restaurants_json': serialize('json', restaurants, use_natural_primary_keys=True)
     }
-
+    print(context['restaurants_json'])
     return render(request, 'feedback/restaurant_list.html', context)
 
 def restaurant_detail(request, restaurant_id):
