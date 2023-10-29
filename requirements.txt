@@ -1,8 +1,8 @@
-asgiref
+#asgiref
 Django
-sqlparse
+#sqlparse
 gunicorn
 django-heroku
-dj-database-url
+#dj-database-url
 django-allauth
-whitenoise
+#whitenoise
