@@ -1,0 +1,16 @@
+/* Style for the content container (list) */
+.content {
+    display: flex; /* Use flexbox to arrange items side by side */
+    justify-content: space-between; /* Space the items evenly */
+}
+
+/* Style for the list container */
+.list {
+    width: 50%; /* Take up 50% of the available space */
+}
+
+/* Style for the map container */
+.map {
+    width: 50%; /* Take up 50% of the available space */
+    height: 400px;
+}
