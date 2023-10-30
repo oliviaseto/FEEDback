@@ -27,7 +27,7 @@ DEBUG = True
 
 #<<<<<<< admin_submission_approval
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTES = ['localhost','127.0.0.1', 'project-a-19-feedback-e9d9adefdb3d.herokuapp.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', 'project-a-19-feedback-e9d9adefdb3d.herokuapp.com']
 #ALLOWED_HOSTS = ['localhost', 'project-a-19-uva-f01ffe4504e2.herokuapp.com']
 
 # Application definition
