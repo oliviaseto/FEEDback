@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-45ajy*3vxwuogc$u5o=jty%bar=0gz9$(%v1&!#%x56fpoqkda
 DEBUG = True
 
 #<<<<<<< admin_submission_approval
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTES = ['localhost','127.0.0.1']
 #ALLOWED_HOSTS = ['localhost', 'project-a-19-uva-f01ffe4504e2.herokuapp.com']
 
 # Application definition
@@ -103,12 +104,18 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 AUTH_USER_MODEL = 'feedback.User'
 
@@ -142,22 +149,21 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-#<<<<<<< admin_submission_approval: just line 155
+#<<<<<<< admin_submission_approval: just line 162
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # STATIC_ROOT = BASE_DIR / "staticfiles"
-
 
 # Activate Django-Heroku.
 # Use this code to avoid the psycopg2 / django-heroku error!

@@ -1,8 +1,24 @@
-#asgiref
-Django
-#sqlparse
-gunicorn
-django-heroku
-#dj-database-url
+# Django dependencies
+Django==4.2.4
+
+# User Authentication
 django-allauth
-#whitenoise
+
+# Web Server
+gunicorn
+
+# Django Heroku
+django-heroku
+
+# Social Authentication (Google)
+django-allauth
+
+# Database configuration
+dj-database-url
+
+# Other dependencies
+# whitenoise
+# asgiref
+# sqlparse
+
+
