@@ -68,8 +68,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 7
 
-#LOGIN_REDIRECT_URL = '/user/profile/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/user/profile/'
+#LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
@@ -109,6 +109,15 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # DATABASES = {
 #     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 # }
+
+# original db setup before deployment on Heroku
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 if IS_HEROKU_APP:
@@ -133,12 +142,6 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 AUTH_USER_MODEL = 'feedback.User'
 
@@ -159,7 +162,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -182,10 +184,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Activate Django-Heroku.
 # Use this code to avoid the psycopg2 / django-heroku error!
