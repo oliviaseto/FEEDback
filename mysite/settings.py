@@ -66,7 +66,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 7
+SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/user/profile/'
 #LOGIN_REDIRECT_URL = '/'
