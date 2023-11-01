@@ -5,6 +5,21 @@
 </head>
 <body>
     <h1>{{ restaurant.name }}</h1>
+    <div class="review-feedback">
+        <span class="average-rating">
+            {% for i in "12345" %}
+                <span class="fa fa-star {% if i|add:"-1" < restaurant.average_rating %} checked {% endif %}"></span>
+            {% endfor %}
+        </span>
+        <span class="average-rating-value">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{ restaurant.average_rating|floatformat:2 }}
+        </span>
+        <span class="review-count">
+            ({{ restaurant.count_reviews }} reviews)
+        </span>
+    </div>
+    <h2>Location:</h2>
     <iframe
         width="600"
         height="450"
@@ -19,7 +34,8 @@
         {% for review in reviews %}
             {% if review.approved and review.restaurant == restaurant %}
                 <p><strong>Username:</strong> {{ review.user.username }}<br>
-                <strong>Review content:</strong> {{ review.content }}</p>
+                <strong>Review:</strong> {{ review.content }}<br>
+                <strong>Rating:</strong> {{ review.rating }}</p>
             {% endif %}
         {% endfor %}
     {% else %}
@@ -31,6 +47,8 @@
     <form method="post">
         {% csrf_token %}
         {{ review_form.as_p }}
+        <label for="rating">Rating (1-5):</label>
+        <input type="number" name="rating" id="rating" min="1" max="5" required>
         <input type="submit" value="Submit Review">
     </form>
     {% endif %}

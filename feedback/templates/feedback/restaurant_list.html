@@ -41,6 +41,20 @@
     <ul>
         {% for restaurant in restaurants %}
             <li>{{ restaurant.name }}</li>
+            <div class="review-feedback">
+                <span class="average-rating">
+                    {% for i in "12345" %}
+                        <span class="fa fa-star {% if i|add:"-1" < restaurant.average_rating %} checked {% endif %}"></span>
+                    {% endfor %}
+                </span>
+                <span class="average-rating-value">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{ restaurant.average_rating|floatformat:2 }}
+                </span>
+                <span class="review-count">
+                    ({{ restaurant.count_reviews }} reviews)
+                </span>
+            </div>
             {% if user.is_user %}
                 <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a>
             {% endif %}

@@ -3,9 +3,10 @@
 <body>
     <h1>Pending Reviews</h1>
     {% for review in pending_reviews %}
-        <p><strong>Restaurant:</strong> {{ review.restaurant }}</p>
-        <p><strong>Username:</strong> {{ review.user.username }}</p>
-        <p><strong>Review content:</strong> {{ review.content }}</p>
+        <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+        <strong>Username:</strong> {{ review.user.username }}<br>
+        <strong>Review:</strong> {{ review.content }}<br>
+        <strong>Rating:</strong> {{ review.rating }}</p>
         <form method="post" action="{% url 'feedback:approve_reviews' %}">
             {% csrf_token %}
             <input type="hidden" name="review_id" value="{{ review.id }}">

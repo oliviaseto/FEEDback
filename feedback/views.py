@@ -87,6 +87,7 @@ def restaurant_detail(request, restaurant_id):
             review.restaurant = restaurant
             review.approved = False  # By default, not approved
             review.not_approved = True  # By default, pending approval
+            review.rating = request.POST.get('rating')  
             review.save()
             message = "Your review has been submitted and is pending admin approval."
             form = ReviewForm()
