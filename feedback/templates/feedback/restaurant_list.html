@@ -1,9 +1,33 @@
 {% load socialaccount %}
+{% load bootstrap5 %}
 <html>
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M&callback=initMap" async defer></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <style>
+        .rating-list li {
+            float: right;
+            color: #ddd;
+            padding: 10px 5px;
+        }
+        
+        .rating-list li:hover, .rating-list li:hover ~ li {
+            color: orange;
+        }
+        	
+        .rating-list {
+            display: inline-block;
+            list-style: none;
+        }
+        
+        .checked {
+            color: orange;
+        }
+    </style>
     <h1>Restaurant List</h1>
     <div id="map" style="height: 400px; width: 50%;"></div>
 
@@ -38,29 +62,25 @@
     </script>
     
     <h2>Restaurants:</h2>
-    <ul>
-        {% for restaurant in restaurants %}
-            <li>{{ restaurant.name }}</li>
-            <div class="review-feedback">
-                <span class="average-rating">
-                    {% for i in "12345" %}
-                        <span class="fa fa-star {% if i|add:"-1" < restaurant.average_rating %} checked {% endif %}"></span>
-                    {% endfor %}
-                </span>
-                <span class="average-rating-value">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    {{ restaurant.average_rating|floatformat:2 }}
-                </span>
-                <span class="review-count">
-                    ({{ restaurant.count_reviews }} reviews)
-                </span>
-            </div>
-            {% if user.is_user %}
-                <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a>
-            {% endif %}
-        {% empty %}
-            <p>No restaurants available.</p>
-        {% endfor %}
-    </ul>
+    {% for restaurant in restaurants %}
+        {{ restaurant.name }}
+        <div class="review-feedback">
+            <span class="average-rating">
+                {% for i in "12345" %}
+                    <span class="fa fa-star {% if i|add:"-1" < restaurant.average_rating %} checked {% endif %}"></span>
+                {% endfor %}
+            </span>
+            <span class="review-count">
+                ({{ restaurant.count_reviews }} reviews)
+            </span>
+        </div>
+        {% if user.is_user %}
+            <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a>
+        {% endif %}
+    {% empty %}
+        <p>No restaurants available.</p>
+    {% endfor %}
+
+    <p><a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a></p>
 </body>
 </html>

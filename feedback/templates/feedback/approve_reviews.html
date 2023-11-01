@@ -1,12 +1,19 @@
 {% load socialaccount %}
 <html>
+
 <body>
     <h1>Pending Reviews</h1>
     {% for review in pending_reviews %}
         <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
         <strong>Username:</strong> {{ review.user.username }}<br>
         <strong>Review:</strong> {{ review.content }}<br>
-        <strong>Rating:</strong> {{ review.rating }}</p>
+        <strong>Rating:</strong> 
+        <span class="review-rating">
+            {% for i in "12345" %}
+                <span class="fa fa-star {% if i|add:"-1" < review.rating %} checked {% endif %}"></span>
+            {% endfor %}
+        </span> 
+        </p>
         <form method="post" action="{% url 'feedback:approve_reviews' %}">
             {% csrf_token %}
             <input type="hidden" name="review_id" value="{{ review.id }}">
