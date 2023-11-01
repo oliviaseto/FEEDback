@@ -1,16 +1,18 @@
-/* Style for the content container (list) */
-.content {
-    display: flex; /* Use flexbox to arrange items side by side */
-    justify-content: space-between; /* Space the items evenly */
+.rating-list li {
+    float: right;
+    color: #ddd;
+    padding: 10px 5px;
 }
 
-/* Style for the list container */
-.list {
-    width: 50%; /* Take up 50% of the available space */
+.rating-list li:hover, .rating-list li:hover ~ li {
+    color: orange;
+}
+    
+.rating-list {
+    display: inline-block;
+    list-style: none;
 }
 
-/* Style for the map container */
-.map {
-    width: 50%; /* Take up 50% of the available space */
-    height: 400px;
+.checked {
+    color: orange;
 }
