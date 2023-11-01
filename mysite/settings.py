@@ -67,7 +67,11 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 8
+# for local
+#SITE_ID = 8 
+
+# for Heroku
+SITE_ID = 6
 
 LOGIN_REDIRECT_URL = '/user/profile/'
 #LOGIN_REDIRECT_URL = '/'
