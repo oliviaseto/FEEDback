@@ -1,31 +1,61 @@
 {% load socialaccount %}
+{% load bootstrap5 %}
 <html>
-
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
 <body>
+    <style>
+        .rating-list li {
+            float: right;
+            color: #ddd;
+            padding: 10px 5px;
+        }
+        
+        .rating-list li:hover, .rating-list li:hover ~ li {
+            color: orange;
+        }
+        	
+        .rating-list {
+            display: inline-block;
+            list-style: none;
+        }
+        
+        .checked {
+            color: orange;
+        }
+    </style>
     <h1>Pending Reviews</h1>
-    {% for review in pending_reviews %}
-        <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
-        <strong>Username:</strong> {{ review.user.username }}<br>
-        <strong>Review:</strong> {{ review.content }}<br>
-        <strong>Rating:</strong> 
-        <span class="review-rating">
-            {% for i in "12345" %}
-                <span class="fa fa-star {% if i|add:"-1" < review.rating %} checked {% endif %}"></span>
-            {% endfor %}
-        </span> 
-        </p>
-        <form method="post" action="{% url 'feedback:approve_reviews' %}">
-            {% csrf_token %}
-            <input type="hidden" name="review_id" value="{{ review.id }}">
-            <button type="submit">Approve</button>
-        </form>
-        <form method="post" action="{% url 'feedback:reject_review' %}">  <!-- Add a form for rejection -->
-            {% csrf_token %}
-            <input type="hidden" name="review_id" value="{{ review.id }}">
-            <button type="submit">Reject</button>
-        </form>
-    {% endfor %}
-    <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
-    <li><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
+    {% if pending_reviews %}
+        {% for review in pending_reviews %}
+            <p><strong>Restaurant:</strong> {{ review.restaurant }}<br>
+            <strong>Username:</strong> {{ review.user.username }}<br>
+            <strong>Review:</strong> {{ review.content }}<br>
+            <strong>Rating:</strong> 
+            <span class="review-rating">
+                {% for i in "12345" %}
+                    <span class="fa fa-star {% if i|add:"-1" < review.rating %} checked {% endif %}"></span>
+                {% endfor %}
+            </span> 
+            </p>
+            <form method="post" action="{% url 'feedback:approve_reviews' %}">
+                {% csrf_token %}
+                <input type="hidden" name="review_id" value="{{ review.id }}">
+                <button type="submit">Approve</button>
+            </form>
+            <form method="post" action="{% url 'feedback:reject_review' %}">  <!-- Add a form for rejection -->
+                {% csrf_token %}
+                <input type="hidden" name="review_id" value="{{ review.id }}">
+                <button type="submit">Reject</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <p>No pending reviews.</p>
+    {% endif %}
+    <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
+    <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
+    <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
 </body>
 </html>

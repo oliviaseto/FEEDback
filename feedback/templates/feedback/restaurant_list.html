@@ -75,7 +75,7 @@
             </span>
         </div>
         {% if user.is_user %}
-            <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a>
+            <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a><br>
         {% endif %}
     {% empty %}
         <p>No restaurants available.</p>

@@ -1,5 +1,11 @@
 {% load socialaccount %}
+{% load bootstrap5 %}
 <html>
+<head>
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
 <body>
   <h1>Welcome to FEEDback!</h1>
   {% if user.is_authenticated %}
