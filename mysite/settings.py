@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'bootstrap5'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -66,7 +67,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 6
+SITE_ID = 8
 
 LOGIN_REDIRECT_URL = '/user/profile/'
 #LOGIN_REDIRECT_URL = '/'

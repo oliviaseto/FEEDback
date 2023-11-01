@@ -1,16 +1,19 @@
-<!DOCTYPE html>
+{% load bootstrap5 %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Admin Profile</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <h1>Welcome to your Admin Profile</h1>
     <p>Username: {{ request.user.username }}</p>
     <p>Name: {{ request.user.name }}</p>
-    <li><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></li>
-    <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
-    <li><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
-    <li><a href="{% url 'feedback:logout' %}">Logout</a>
+    <p><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></p>
+    <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
+    <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
+    <p><a href="{% url 'feedback:logout' %}">Logout</a></p>
 </body>
 </html>

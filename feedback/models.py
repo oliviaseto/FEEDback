@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Avg, Count
 
 class User(AbstractUser):
     is_user = models.BooleanField(default=False)
@@ -24,6 +25,16 @@ class Restaurant(models.Model):
     lat = models.DecimalField(max_digits=10, decimal_places=7)
     lng = models.DecimalField(max_digits=10, decimal_places=7)
 
+    def average_rating(self):
+        reviews = Review.objects.filter(restaurant=self, approved=True).aggregate(average=Avg('rating'))
+        avg = reviews["average"] or 0
+        return avg
+
+    def count_reviews(self):
+        reviews = Review.objects.filter(restaurant=self, approved=True).aggregate(count=Count('id'))
+        count = reviews["count"] or 0
+        return count
+
     def __str__(self):
         return self.name
 
@@ -34,6 +45,9 @@ class Review(models.Model):
     approved = models.BooleanField(default=False)  
     not_approved = models.BooleanField(default=True) 
     is_rejected = models.BooleanField(default=False)  
+    rating = models.IntegerField(default=1)
 
     def __str__(self):
         return f"Review for {self.restaurant.name} by {self.user.username}"
+
+    
