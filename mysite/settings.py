@@ -27,8 +27,6 @@ SECRET_KEY = 'django-insecure-45ajy*3vxwuogc$u5o=jty%bar=0gz9$(%v1&!#%x56fpoqkda
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#<<<<<<< admin_submission_approval
-#ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['localhost','127.0.0.1', 'project-a-19-feedback-e9d9adefdb3d.herokuapp.com']
 #ALLOWED_HOSTS = ['localhost', 'project-a-19-uva-f01ffe4504e2.herokuapp.com']
 
@@ -85,7 +83,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -184,7 +183,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR,  'templates'),
+    # Add to this list all the locations containing your static files 
+)
+s
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
