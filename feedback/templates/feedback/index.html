@@ -12,19 +12,22 @@
     <p>Welcome, you are logged in as {{ user.username }}</p>
     {% if user.is_user %}
       <p>You are currently using a USER account.</p>
-      <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
-      <li><a href="{% url 'feedback:review_list' %}">View Your Reviews</a></li>
+      <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
+      <p><a href="{% url 'feedback:review_list' %}">View Your Reviews</a></p>
+      <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
+      <p><a href="{% url 'feedback:user_submitted_restaurant_list' %}">View Your Submitted Restaurants</a></p>
     {% endif %} 
     {% if user.is_admin %}
       <p>You are currently using an ADMIN account.</p>
-      <li><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></li>
-      <li><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
-      <li><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
+      <p><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></p>
+      <p><a href="{% url 'feedback:restaurant_list' %}">View Pending Restaurants to Be Approved</a></p>
+      <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
+      <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
     {% endif %} 
-    <li><a href="{% url 'feedback:logout' %}">Logout</a>
+    <p><a href="{% url 'feedback:logout' %}">Logout</a></p>
   {% else %}
-    <li><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/user/">Login As or Create New User Account</a></li>
-    <li><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/admin/">Login As or Create New Admin Account</a></li>
-    {% endif %} 
+    <p><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/user/">Login As or Create New User Account</a></p>
+    <p><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/admin/">Login As or Create New Admin Account</a></p>
+  {% endif %} 
 </body>
 </html>

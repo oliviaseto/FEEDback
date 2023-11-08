@@ -1,0 +1,38 @@
+{% load socialaccount %}
+{% load bootstrap5 %}
+{% load static %}
+<html>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+</head>
+<body>
+    <h1>Pending Restaurants</h1>
+    {% if pending_restaurants %}
+        {% for restaurant in pending_restaurants %}
+            <!-- INFO ABOUT RESTAURANT -->
+            <p><strong>Restaurant:</strong> {{ restaurant.name }}<br>
+            <strong>Username:</strong> {{ restaurant.user.username }}<br>
+            <strong>Location:</strong> {{ restaurant.street_address,  restaurant.city, restaurant.state }}<br>
+            </p> 
+            <form method="post" action="{% url 'feedback:approve_or_reject_restaurants' restaurant.id 'approve' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Approve</button>
+            </form>
+            <form method="post" action="{% url 'feedback:approve_or_reject_restaurants' restaurant.id 'reject' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Reject</button>
+            </form>
+        {% endfor %}
+    {% else %}
+        <p>No pending restaurants to be approved.</p>
+    {% endif %}
+    <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
+    <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
+    <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
+</body>
+</html>

@@ -1,0 +1,41 @@
+{% load bootstrap5 %}
+{% load static %}
+<html>
+<head>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+</head>
+<body>
+    <h1>Your Submitted Restaurants</h1>
+    <h2>Pending Restaurants</h2>
+    {% if pending_restaurants %}
+        {% for restaurant in pending_restaurants %}
+            <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
+        {% endfor %}
+    {% else %}
+            <p>No pending restaurants.</p>
+    {% endif %}
+
+    <h2>Approved Restaurants</h2>
+    {% if approved_restaurants %}
+        {% for restaurant in approved_restaurants %}
+            <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No approved restaurants.</p>
+    {% endif %}
+
+    <h2>Rejected Restaurants</h2>
+    {% if rejected_restaurants %}
+        {% for restaurant in rejected_restaurants %}
+            <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No rejected restaurants.</p>
+    {% endif %}
+
+    <a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a>
+</body>
+</html>

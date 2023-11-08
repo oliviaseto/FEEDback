@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpResponseRedirect
 from .models import User, Restaurant, Review
-from .forms import RestaurantForm, ReviewForm
+from .forms import RestaurantForm, ReviewForm, AdminMessageForm
 import urllib.request, json 
 from django.core import serializers
 from django.core.serializers import serialize
@@ -132,8 +132,8 @@ def restaurant_detail(request, restaurant_id):
     return render(request, 'feedback/restaurant_detail.html', context)
 
 def submit_restaurant(request):
-    if not request.user.is_admin:
-        return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect non-admins to a different page
+    # if not request.user.is_admin:
+    #     return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect non-admins to a different page
 
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -180,6 +180,15 @@ def submit_restaurant(request):
             restaurant.state = state
             restaurant.lat = lat
             restaurant.lng = lng
+            restaurant.user = request.user
+            if request.user.is_admin:
+                restaurant.approved = True
+                restaurant.not_approved = False
+                restaurant.is_rejected = False
+            else:
+                restaurant.approved = False
+                restaurant.not_approved = True
+                restaurant.is_rejected = False
             restaurant.save()
 
             return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect to the restaurant list
@@ -239,6 +248,60 @@ class ReviewListView(View):
         context['pending_reviews'] = pending_reviews
         context['approved_reviews'] = approved_reviews
         context['rejected_reviews'] = rejected_reviews
+        return context
+
+    def get(self, request, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+    
+def approve_or_reject_restaurants(request, restaurant_id, action):
+    if not request.user.is_admin:
+        return redirect('feedback:restaurant_list')
+
+    pending_restaurants = Restaurant.objects.filter(not_approved=True)
+
+    if request.method == 'POST':
+        restaurant_id = request.POST.get('restaurant_id')  
+        restaurant = Restaurant.objects.get(pk=restaurant_id)
+        form = AdminMessageForm(request.POST, instance=restaurant)
+        if form.is_valid():
+            admin_message = form.cleaned_data['admin_message']
+            restaurant.admin_message = admin_message
+
+            if action == 'approve':
+                restaurant.approved = True
+                restaurant.not_approved = False
+                restaurant.is_rejected = False
+            elif action == 'reject':
+                restaurant.not_approved = False
+                restaurant.is_rejected = True
+
+            restaurant.save()
+            return redirect('feedback:approve_restaurants')
+
+    else:
+        form = AdminMessageForm(instance=restaurant)
+
+    context = {
+        'form': form,
+        'pending_restaurants': pending_restaurants,
+        'action': action,
+    }
+
+    return render(request, 'feedback/approve_or_reject_restaurants.html', context)
+
+class UserSumbittedRestaurantListView(View):
+    template_name = 'feedback/user_submitted_restaurant_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        user = self.request.user
+        pending_restaurants = Restaurant.objects.filter(user=user, not_approved=True)
+        approved_restaurants = Restaurant.objects.filter(user=user, approved=True)
+        rejected_restaurants = Restaurant.objects.filter(user=user, is_rejected=True)
+        context['pending_restaurants'] = pending_restaurants
+        context['approved_restaurants'] = approved_restaurants
+        context['rejected_restaurants'] = rejected_restaurants
         return context
 
     def get(self, request, **kwargs):

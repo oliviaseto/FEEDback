@@ -12,6 +12,7 @@
     <p>Username: {{ request.user.username }}</p>
     <p>Name: {{ request.user.name }}</p>
     <p><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></p>
+    <p><a href="{% url 'feedback:approve_or_reject_restaurants' %}">View Pending Restaurants to Be Approved</a></p>
     <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
     <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
     <p><a href="{% url 'feedback:logout' %}">Logout</a></p>

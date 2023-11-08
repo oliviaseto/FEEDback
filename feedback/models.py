@@ -25,6 +25,12 @@ class Restaurant(models.Model):
     lat = models.DecimalField(max_digits=10, decimal_places=7)
     lng = models.DecimalField(max_digits=10, decimal_places=7)
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    approved = models.BooleanField(default=False)  
+    not_approved = models.BooleanField(default=True) 
+    is_rejected = models.BooleanField(default=False)  
+    admin_message = models.TextField(default="")
+
     def average_rating(self):
         reviews = Review.objects.filter(restaurant=self, approved=True).aggregate(average=Avg('rating'))
         avg = reviews["average"] or 0

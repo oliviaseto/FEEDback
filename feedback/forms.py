@@ -13,4 +13,9 @@ class ReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['content'].label = '' 
+        self.fields['content'].label = ''
+
+class AdminMessageForm(forms.ModelForm):
+    class Meta:
+        model = Restaurant
+        fields = ['admin_message']
