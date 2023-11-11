@@ -19,3 +19,7 @@ class AdminMessageForm(forms.ModelForm):
     class Meta:
         model = Restaurant
         fields = ['admin_message']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['admin_message'].label = ''

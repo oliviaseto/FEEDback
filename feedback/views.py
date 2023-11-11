@@ -63,13 +63,13 @@ class AdminProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 def restaurant_list(request):
-    restaurants = Restaurant.objects.all()
+    restaurants = Restaurant.objects.filter(approved=True)
     # context = {
     #     'restaurants': Restaurant.objects.all(),
     #     'restaurants_json': serializers.serialize('json', restaurants)
     # }
     context = {
-        'restaurants': Restaurant.objects.all(),
+        'restaurants': restaurants,
         'restaurants_json': serialize('json', restaurants, use_natural_primary_keys=True)
     }
     return render(request, 'feedback/restaurant_list.html', context)
@@ -254,38 +254,56 @@ class ReviewListView(View):
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
     
-def approve_or_reject_restaurants(request, restaurant_id, action):
-    if not request.user.is_admin:
-        return redirect('feedback:restaurant_list')
-
+def approve_or_reject_restaurants(request):
     pending_restaurants = Restaurant.objects.filter(not_approved=True)
 
     if request.method == 'POST':
-        restaurant_id = request.POST.get('restaurant_id')  
+        restaurant_id = request.POST.get('restaurant_id') 
         restaurant = Restaurant.objects.get(pk=restaurant_id)
         form = AdminMessageForm(request.POST, instance=restaurant)
         if form.is_valid():
             admin_message = form.cleaned_data['admin_message']
+            print(admin_message)
             restaurant.admin_message = admin_message
-
-            if action == 'approve':
-                restaurant.approved = True
-                restaurant.not_approved = False
-                restaurant.is_rejected = False
-            elif action == 'reject':
-                restaurant.not_approved = False
-                restaurant.is_rejected = True
-
+            restaurant.approved = True
+            restaurant.not_approved = False
+            restaurant.is_rejected = False
             restaurant.save()
-            return redirect('feedback:approve_restaurants')
-
+            return redirect('feedback:approve_or_reject_restaurants')
     else:
-        form = AdminMessageForm(instance=restaurant)
+        form = AdminMessageForm()
 
     context = {
         'form': form,
         'pending_restaurants': pending_restaurants,
-        'action': action,
+    }
+
+    return render(request, 'feedback/approve_or_reject_restaurants.html', context)
+
+def reject_restaurant(request):
+    pending_restaurants = Restaurant.objects.filter(not_approved=True)
+
+    if request.method == 'POST':
+        restaurant_id = request.POST.get('restaurant_id') 
+        restaurant = Restaurant.objects.get(pk=restaurant_id)
+        form = AdminMessageForm(request.POST, instance=restaurant)
+        if form.is_valid():
+            admin_message = form.cleaned_data['admin_message']
+            print(admin_message)
+            restaurant.admin_message = admin_message
+            restaurant.approved = False
+            restaurant.is_rejected = True
+            restaurant.not_approved = False
+            restaurant.save()
+
+        # Redirect to the same page 
+        return redirect('feedback:approve_or_reject_restaurants')  
+    else:
+        form = AdminMessageForm()
+
+    context = {
+        'form': form,
+        'pending_restaurants': pending_restaurants,
     }
 
     return render(request, 'feedback/approve_or_reject_restaurants.html', context)

@@ -22,6 +22,7 @@
     {% if approved_restaurants %}
         {% for restaurant in approved_restaurants %}
             <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
+            <p><strong>Admin message:</strong> {{ restaurant.admin_message }}</p>
         {% endfor %}
     {% else %}
         <p>No approved restaurants.</p>
@@ -31,6 +32,7 @@
     {% if rejected_restaurants %}
         {% for restaurant in rejected_restaurants %}
             <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
+            <p><strong>Admin message:</strong> {{ restaurant.admin_message }}</p>
         {% endfor %}
     {% else %}
         <p>No rejected restaurants.</p>

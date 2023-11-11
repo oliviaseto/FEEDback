@@ -15,16 +15,18 @@
             <!-- INFO ABOUT RESTAURANT -->
             <p><strong>Restaurant:</strong> {{ restaurant.name }}<br>
             <strong>Username:</strong> {{ restaurant.user.username }}<br>
-            <strong>Location:</strong> {{ restaurant.street_address,  restaurant.city, restaurant.state }}<br>
+            <strong>Location:</strong> {{ restaurant.street_address }} {{ restaurant.city }} {{ restaurant.state }}<br>
             </p> 
-            <form method="post" action="{% url 'feedback:approve_or_reject_restaurants' restaurant.id 'approve' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <form method="post" action="{% url 'feedback:approve_or_reject_restaurants'%}">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
                 <button type="submit">Approve</button>
             </form>
-            <form method="post" action="{% url 'feedback:approve_or_reject_restaurants' restaurant.id 'reject' %}">
+            <form method="post" action="{% url 'feedback:reject_restaurant' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
                 <button type="submit">Reject</button>
             </form>
         {% endfor %}

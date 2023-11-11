@@ -29,7 +29,7 @@ class Restaurant(models.Model):
     approved = models.BooleanField(default=False)  
     not_approved = models.BooleanField(default=True) 
     is_rejected = models.BooleanField(default=False)  
-    admin_message = models.TextField(default="")
+    admin_message = models.TextField(default="", blank=True)
 
     def average_rating(self):
         reviews = Review.objects.filter(restaurant=self, approved=True).aggregate(average=Avg('rating'))
