@@ -1,19 +1,51 @@
+{% extends "base.html" %}
 {% load socialaccount %}
 {% load bootstrap5 %}
 {% load static %}
 <html>
 <head>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap" async defer></script>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body> 
-    <h1>Restaurant List</h1>
-    <div id="map" style="height: 400px; width: 50%;"></div>
+    {% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                {% for restaurant in restaurants %}
+                    <div class="card text-center mb-3">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ restaurant.name }}</h3>
+                            <div class="review-feedback">
+                                <span class="average-rating">
+                                    {% for i in "12345" %}
+                                        <span class="fa fa-star {% if i|add:"-1" < restaurant.average_rating %} checked {% endif %}"></span>
+                                    {% endfor %}
+                                </span>
+                                <span class="review-count">
+                                    ({{ restaurant.count_reviews }} reviews)
+                                </span>
+                            </div>
+                            <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}" class="btn btn-primary mt-2">View Restaurant Details</a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No restaurants available.</p>
+                {% endfor %}
+            </div>
 
-    <script >
+            <div class="col-md-8">
+                <div class="card">
+                    <div id="map" style="height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
         function initMap() {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 15,
@@ -26,7 +58,7 @@
                     },
                 ]
             });
-    
+
             var restaurants = {{ restaurants_json|safe }};
             restaurants.forEach(function(restaurant) {
                 var restaurantLatLng = {
@@ -40,33 +72,9 @@
                 });
             });
         }
-    window.initMap = initMap;
+        window.initMap = initMap;
     </script>
-    
-    <h2>Restaurants:</h2>
-    {% for restaurant in restaurants %}
-        {{ restaurant.name }}
-        <div class="review-feedback">
-            <span class="average-rating">
-                {% for i in "12345" %}
-                    <span class="fa fa-star {% if i|add:"-1" < restaurant.average_rating %} checked {% endif %}"></span>
-                {% endfor %}
-            </span>
-            <span class="review-count">
-                ({{ restaurant.count_reviews }} reviews)
-            </span>
-        </div>
-        {% if user.is_user %}
-            <a href="{% url 'feedback:restaurant_detail' restaurant_id=restaurant.id %}">View Restaurant Details</a><br>
-        {% endif %}
-    {% empty %}
-        <p>No restaurants available.</p>
-    {% endfor %}
 
-    {% if user.is_user %}
-        <p><a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a></p>
-    {% else %}
-        <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
-    {% endif %}
+    {% endblock %}
 </body>
 </html>

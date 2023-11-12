@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load bootstrap5 %}
 {% load static %}
 <html>
@@ -8,36 +9,71 @@
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body>
-    <h1>Your Submitted Restaurants</h1>
-    <h2>Pending Restaurants</h2>
-    {% if pending_restaurants %}
-        {% for restaurant in pending_restaurants %}
-            <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
-        {% endfor %}
-    {% else %}
-            <p>No pending restaurants.</p>
-    {% endif %}
+    {% block content %}
+        <div class="container mt-5">
+            <h1 class="text-center mb-4">Your Submitted Restaurants</h1>
 
-    <h2>Approved Restaurants</h2>
-    {% if approved_restaurants %}
-        {% for restaurant in approved_restaurants %}
-            <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
-            <p><strong>Admin message:</strong> {{ restaurant.admin_message }}</p>
-        {% endfor %}
-    {% else %}
-        <p>No approved restaurants.</p>
-    {% endif %}
+            <div class="row">
+                <div class="col-md-4">
+                    <h2 class="text-center mb-4">Pending Restaurants</h2>
+                    {% if pending_restaurants %}
+                        {% for restaurant in pending_restaurants %}
+                            <div class="card text-center mb-3"> 
+                                <div class="card-body">
+                                    <h3>{{ restaurant.name }}</h3>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="card text-center mb-3"> 
+                        <div class="card-body">
+                            <p>No pending restaurants.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
 
-    <h2>Rejected Restaurants</h2>
-    {% if rejected_restaurants %}
-        {% for restaurant in rejected_restaurants %}
-            <p><strong>Restaurant:</strong> {{ restaurant.name }}</p>
-            <p><strong>Admin message:</strong> {{ restaurant.admin_message }}</p>
-        {% endfor %}
-    {% else %}
-        <p>No rejected restaurants.</p>
-    {% endif %}
+                <div class="col-md-4">
+                    <h2 class="text-center mb-4">Approved Restaurants</h2>
+                    {% if approved_restaurants %}
+                        {% for restaurant in approved_restaurants %}
+                            <div class="card text-center mb-3"> 
+                                <div class="card-body">
+                                    <h3>{{ restaurant.name }}</h3>
+                                    {% if restaurant.admin_message %}
+                                        <p class="admin-message"><strong>Admin message:</strong> {{ restaurant.admin_message }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="card text-center mb-3"> 
+                        <div class="card-body">
+                            <p>No approved restaurants.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
 
-    <a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a>
+                <div class="col-md-4">
+                    <h2 class="text-center mb-4">Rejected Restaurants</h2>
+                    {% if rejected_restaurants %}
+                        {% for restaurant in rejected_restaurants %}
+                            <div class="card text-center mb-3">
+                                <h3>{{ restaurant.name }}</h3>
+                                {% if restaurant.admin_message %}
+                                    <p class="admin-message"><strong>Admin message:</strong> {{ restaurant.admin_message }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="card text-center mb-3"> 
+                        <p>No rejected restaurants.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
 </body>
 </html>

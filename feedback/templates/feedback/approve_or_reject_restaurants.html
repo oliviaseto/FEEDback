@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load socialaccount %}
 {% load bootstrap5 %}
 {% load static %}
@@ -9,27 +10,35 @@
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body>
-    <h1>Pending Restaurants</h1>
-    {% if pending_restaurants %}
-        {% for restaurant in pending_restaurants %}
-            <!-- INFO ABOUT RESTAURANT -->
-            <p><strong>Restaurant:</strong> {{ restaurant.name }}<br>
-            <strong>Username:</strong> {{ restaurant.user.username }}<br>
-            <strong>Location:</strong> {{ restaurant.street_address }} {{ restaurant.city }} {{ restaurant.state }}<br>
-            </p> 
-            <form method="post" action="{% url 'feedback:approve_or_reject_restaurants'%}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
-                <button type="submit" name="action" value="approve">Approve</button>
-                <button type="submit" name="action" value="reject">Reject</button>
-            </form>
-        {% endfor %}
-    {% else %}
-        <p>No pending restaurants to be approved.</p>
-    {% endif %}
-    <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
-    <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
-    <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
+    {% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Pending Restaurants</h1>
+        {% if pending_restaurants %}
+            {% for restaurant in pending_restaurants %}
+            <div class="card text-center w-50 mx-auto w-50 mb-3">
+                <div class="card-body">
+                    <p><strong>Restaurant:</strong> {{ restaurant.name }}<br>
+                    <strong>Username:</strong> {{ restaurant.user.username }}<br>
+                    <strong>Location:</strong> {{ restaurant.street_address }} {{ restaurant.city }} {{ restaurant.state }}<br>
+                    </p> 
+                    <form method="post" action="{% url 'feedback:approve_or_reject_restaurants'%}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
+                        <button type="submit" name="action" value="approve" class="btn btn-success me-2">Approve</button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger ms-2">Reject</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="card text-center w-50 mx-auto w-50 mb-3">
+            <div class="card-body">
+                <p>No pending restaurants to be approved.</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
 </body>
 </html>

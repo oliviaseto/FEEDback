@@ -31,8 +31,9 @@ class CompleteGoogleOAuth2View(View):
 
             login(request, user)
 
-            profile_url = f'/feedback/user-profile/' if user_type == 'user' else f'/feedback/admin-profile/'
-            return redirect(profile_url)
+            #profile_url = f'/feedback/user-profile/' if user_type == 'user' else f'/feedback/admin-profile/'
+            #return redirect(profile_url)
+            return redirect(f'/feedback/restaurant-list/')
         return
 
 class UserProfileView(LoginRequiredMixin, View):

@@ -16,3 +16,8 @@
 .checked {
     color: orange;
 }
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load bootstrap5 %}
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+    {% block content %}
     <h1>Welcome to your Admin Profile</h1>
     <p>Username: {{ request.user.username }}</p>
     <p>Name: {{ request.user.name }}</p>
@@ -16,5 +18,6 @@
     <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
     <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
     <p><a href="{% url 'feedback:logout' %}">Logout</a></p>
+    {% endblock %}
 </body>
 </html>
