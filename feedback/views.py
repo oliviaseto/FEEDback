@@ -134,6 +134,7 @@ def restaurant_detail(request, restaurant_id):
 def submit_restaurant(request):
     # if not request.user.is_admin:
     #     return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect non-admins to a different page
+    message = ""
 
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
@@ -142,6 +143,7 @@ def submit_restaurant(request):
             street_address = form.cleaned_data['street_address']
             city = form.cleaned_data['city']
             state = form.cleaned_data['state']
+            zip_code = form.cleaned_data['zip_code']
 
             street_address_for_url = ''
             street_address_list = street_address.split(" ")
@@ -159,12 +161,12 @@ def submit_restaurant(request):
                 else:
                     city_for_url += "+" + city_list[part] + ","
 
-            state_for_url = "+" + state
+            state_for_url = "+" + state + "+" + str(zip_code)
 
             location_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + street_address_for_url + city_for_url + state_for_url + '&key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M'
             # has to follow this format: 
             # https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCaoOcQLJHlgQQyc98Wfw_dpA6j3H4c70M
-
+            print(location_url)
             lat = 0.0
             lng = 0.0
             with urllib.request.urlopen(location_url) as url:
@@ -189,14 +191,19 @@ def submit_restaurant(request):
                 restaurant.approved = False
                 restaurant.not_approved = True
                 restaurant.is_rejected = False
+                message = "Your request for a new restaurant to be added has been submitted and is pending admin approval."
             restaurant.save()
+            form = RestaurantForm()
 
-            return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect to the restaurant list
+            if request.user.is_admin:
+                return HttpResponseRedirect('/feedback/restaurant-list/')  # Redirect to the restaurant list
+            else:
+                return render(request, 'feedback/submit_restaurant.html', {'form': form, 'user': request.user, "message": message})
 
     else:
         form = RestaurantForm()
 
-    return render(request, 'feedback/submit_restaurant.html', {'form': form})
+    return render(request, 'feedback/submit_restaurant.html', {'form': form, 'user': request.user, "message": message})
 
 def approve_reviews(request):
     if not request.user.is_admin:
@@ -258,46 +265,28 @@ def approve_or_reject_restaurants(request):
     pending_restaurants = Restaurant.objects.filter(not_approved=True)
 
     if request.method == 'POST':
-        restaurant_id = request.POST.get('restaurant_id') 
+        restaurant_id = request.POST.get('restaurant_id')
         restaurant = Restaurant.objects.get(pk=restaurant_id)
         form = AdminMessageForm(request.POST, instance=restaurant)
+
         if form.is_valid():
             admin_message = form.cleaned_data['admin_message']
-            print(admin_message)
+            action = request.POST.get('action')
+
+            if action == 'approve':
+                restaurant.approved = True
+                restaurant.not_approved = False
+                restaurant.is_rejected = False
+            elif action == 'reject':
+                restaurant.approved = False
+                restaurant.is_rejected = True
+                restaurant.not_approved = False
+
             restaurant.admin_message = admin_message
-            restaurant.approved = True
-            restaurant.not_approved = False
-            restaurant.is_rejected = False
             restaurant.save()
+
             return redirect('feedback:approve_or_reject_restaurants')
-    else:
-        form = AdminMessageForm()
 
-    context = {
-        'form': form,
-        'pending_restaurants': pending_restaurants,
-    }
-
-    return render(request, 'feedback/approve_or_reject_restaurants.html', context)
-
-def reject_restaurant(request):
-    pending_restaurants = Restaurant.objects.filter(not_approved=True)
-
-    if request.method == 'POST':
-        restaurant_id = request.POST.get('restaurant_id') 
-        restaurant = Restaurant.objects.get(pk=restaurant_id)
-        form = AdminMessageForm(request.POST, instance=restaurant)
-        if form.is_valid():
-            admin_message = form.cleaned_data['admin_message']
-            print(admin_message)
-            restaurant.admin_message = admin_message
-            restaurant.approved = False
-            restaurant.is_rejected = True
-            restaurant.not_approved = False
-            restaurant.save()
-
-        # Redirect to the same page 
-        return redirect('feedback:approve_or_reject_restaurants')  
     else:
         form = AdminMessageForm()
 

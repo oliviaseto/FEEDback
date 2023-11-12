@@ -17,17 +17,12 @@
             <strong>Username:</strong> {{ restaurant.user.username }}<br>
             <strong>Location:</strong> {{ restaurant.street_address }} {{ restaurant.city }} {{ restaurant.state }}<br>
             </p> 
-            {% csrf_token %}
-            {{ form.as_p }}
             <form method="post" action="{% url 'feedback:approve_or_reject_restaurants'%}">
                 {% csrf_token %}
+                {{ form.as_p }}
                 <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
-                <button type="submit">Approve</button>
-            </form>
-            <form method="post" action="{% url 'feedback:reject_restaurant' %}">
-                {% csrf_token %}
-                <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
-                <button type="submit">Reject</button>
+                <button type="submit" name="action" value="approve">Approve</button>
+                <button type="submit" name="action" value="reject">Reject</button>
             </form>
         {% endfor %}
     {% else %}

@@ -63,6 +63,10 @@
         <p>No restaurants available.</p>
     {% endfor %}
 
-    <p><a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a></p>
+    {% if user.is_user %}
+        <p><a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a></p>
+    {% else %}
+        <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
+    {% endif %}
 </body>
 </html>

@@ -21,11 +21,12 @@ class Restaurant(models.Model):
     street_address = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
+    zip_code = models.IntegerField()
 
     lat = models.DecimalField(max_digits=10, decimal_places=7)
     lng = models.DecimalField(max_digits=10, decimal_places=7)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     approved = models.BooleanField(default=False)  
     not_approved = models.BooleanField(default=True) 
     is_rejected = models.BooleanField(default=False)  

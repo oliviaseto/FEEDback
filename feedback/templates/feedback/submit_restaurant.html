@@ -12,5 +12,14 @@
         {{ form.as_p }}
         <input type="submit" value="Submit Restaurant">
     </form>
+
+    {% if user.is_user %}
+        {% if message %}
+            <p>{{ message }}</p><br>
+            <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p><br>
+            <p><a href="{% url 'feedback:user_submitted_restaurant_list' %}">View Your Submitted Restaurants</a></p><br>
+            <p><a href="{% url 'feedback:user_profile' %}">Go Back to Your Profile</a></p>
+        {% endif %}
+    {% endif %}
 </body>
 </html>
