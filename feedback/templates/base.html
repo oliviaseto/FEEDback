@@ -1,0 +1,55 @@
+{% load socialaccount %}
+{% load bootstrap5 %}
+<html>
+<head>
+  <title>FEEDback</title>
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand">FEEDback</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
+            {% if user.is_user %}
+              <li class="nav-item dropdown me-auto">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  View Your
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLinkUser">
+                  <li><a class="dropdown-item" href="{% url 'feedback:review_list' %}">Reviews</a></li>
+                  <li><a class="dropdown-item" href="{% url 'feedback:user_submitted_restaurant_list' %}">Submitted Restaurants</a></li>
+                </ul>
+              </li>
+            {% endif %}
+            {% if user.is_admin %}
+              <li class="nav-item dropdown me-auto">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  View Pending
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLinkAdmin">
+                  <li class="nav-item"><a class="nav-link" href="{% url 'feedback:approve_reviews' %}">Reviews</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'feedback:restaurant_list' %}">Restaurants</a></li>
+                </ul>
+              </li>
+            {% endif %}
+            <li class="nav-item me-auto"><a class="nav-link" href="{% url 'feedback:logout' %}">Logout</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>

@@ -25,8 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-45ajy*3vxwuogc$u5o=jty%bar=0gz9$(%v1&!#%x56fpoqkda'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1', 'project-a-19-feedback-e9d9adefdb3d.herokuapp.com']
 #ALLOWED_HOSTS = ['localhost', 'project-a-19-uva-f01ffe4504e2.herokuapp.com']
@@ -67,10 +67,10 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # for local (Olivia's dev)
-# SITE_ID = 8 
+SITE_ID = 8 
 
 # for Heroku
-SITE_ID = 6
+# SITE_ID = 6
 
 LOGIN_REDIRECT_URL = '/user/profile/'
 #LOGIN_REDIRECT_URL = '/'

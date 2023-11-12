@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load socialaccount %}
 {% load bootstrap5 %}
 {% load static %}
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body>
+    {% block content %}
     <h1>Pending Reviews</h1>
     {% if pending_reviews %}
         {% for review in pending_reviews %}
@@ -36,8 +38,6 @@
     {% else %}
         <p>No pending reviews.</p>
     {% endif %}
-    <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
-    <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
-    <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
+    {% endblock %}
 </body>
 </html>

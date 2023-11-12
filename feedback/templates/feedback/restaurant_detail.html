@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load socialaccount %}
 {% load bootstrap5 %}
 {% load static %}
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body>
+    {% block content %}
     <h1>{{ restaurant.name }}</h1>
     <div class="review-feedback">
         <span class="average-rating">
@@ -67,6 +69,6 @@
         <p>{{ message }}</p>
     {% endif %}
 
-    <a href="{% url 'feedback:restaurant_list' %}">Go Back to Restaurant List</a>
+    {% endblock %}
 </body>
 </html>

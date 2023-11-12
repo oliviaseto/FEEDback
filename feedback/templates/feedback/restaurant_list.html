@@ -1,3 +1,4 @@
+{% extends "base.html" %}
 {% load socialaccount %}
 {% load bootstrap5 %}
 {% load static %}
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body> 
+    {% block content %}
     <h1>Restaurant List</h1>
     <div id="map" style="height: 400px; width: 50%;"></div>
 
@@ -68,5 +70,6 @@
     {% else %}
         <p><a href="{% url 'feedback:admin_profile' %}">Go Back to Your Profile</a></p>
     {% endif %}
+    {% endblock %}
 </body>
 </html>
