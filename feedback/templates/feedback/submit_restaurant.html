@@ -8,19 +8,24 @@
 </head>
 <body>
     {% block content %}
-    <h1>Submit New Restaurant</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit Restaurant">
-    </form>
+    <div class="container text-center mt-5">
+        <h1 class="text-center mb-4">Submit New Restaurant</h1>
+        <div class="card text-center mx-auto w-50">
+            <div class="card-body">
+                <form method="post" class="my-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-primary" value="Submit Restaurant">
+                </form>
+            </div>
+        </div>
 
-    {% if user.is_user %}
-        {% if message %}
-            <p>{{ message }}</p><br>
+        {% if user.is_user %}
+            {% if message %}
+                <p>{{ message }}</p><br>
+            {% endif %}
         {% endif %}
-    {% endif %}
-
-    {% endblock %}
+    </div>
+{% endblock %}
 </body>
 </html>

@@ -1,33 +1,44 @@
+{% extends "base.html" %}
 {% load socialaccount %}
 {% load bootstrap5 %}
-<html>
+{% load static %}
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {% bootstrap_css %}
   {% bootstrap_javascript %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+  <title>Welcome to FEEDback!</title>
 </head>
-<body>
-  <h1>Welcome to FEEDback!</h1>
-  {% if user.is_authenticated %}
-    <p>Welcome, you are logged in as {{ user.username }}</p>
-    {% if user.is_user %}
-      <p>You are currently using a USER account.</p>
-      <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
-      <p><a href="{% url 'feedback:review_list' %}">View Your Reviews</a></p>
-      <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
-      <p><a href="{% url 'feedback:user_submitted_restaurant_list' %}">View Your Submitted Restaurants</a></p>
-    {% endif %} 
-    {% if user.is_admin %}
-      <p>You are currently using an ADMIN account.</p>
-      <p><a href="{% url 'feedback:approve_reviews' %}">View Pending Reviews to Be Approved</a></p>
-      <p><a href="{% url 'feedback:restaurant_list' %}">View Pending Restaurants to Be Approved</a></p>
-      <p><a href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></p>
-      <p><a href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></p>
-    {% endif %} 
-    <p><a href="{% url 'feedback:logout' %}">Logout</a></p>
-  {% else %}
-    <p><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/user/">Login As or Create New User Account</a></p>
-    <p><a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/admin/">Login As or Create New Admin Account</a></p>
-  {% endif %} 
+<body class="d-flex align-items-center justify-content-center">
+  {% block content %}
+    <div class="container mt-5">
+      <h1 class="mb-4">Welcome to FEEDback!</h1>
+      {% if user.is_authenticated %}
+        <p class="lead">Welcome, you are logged in as {{ user.username }}</p>
+        {% if user.is_user %}
+          <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Restaurant List</a>
+          <a href="{% url 'feedback:review_list' %}" class="btn btn-primary">View Your Reviews</a>
+          <a href="{% url 'feedback:submit_restaurant' %}" class="btn btn-primary">Submit New Restaurant</a>
+          <a href="{% url 'feedback:user_submitted_restaurant_list' %}" class="btn btn-primary">View Your Submitted Restaurants</a>
+        {% endif %} 
+        {% if user.is_admin %}
+          <a href="{% url 'feedback:approve_reviews' %}" class="btn btn-primary">View Pending Reviews to Be Approved</a>
+          <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Pending Restaurants to Be Approved</a>
+          <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Restaurant List</a>
+          <a href="{% url 'feedback:submit_restaurant' %}" class="btn btn-primary">Submit New Restaurant</a>
+        {% endif %} 
+        <p class="mt-3"><a href="{% url 'feedback:logout' %}" class="btn btn-danger">Logout</a></p>
+      {% else %}
+        <a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/user/" class="btn btn-primary">Login As or Create New User Account</a>
+        <div class="mt-3"></div> <!-- Added space between buttons -->
+        <a href="{% provider_login_url 'google' %}?next=/feedback/complete/google-oauth2/admin/" class="btn btn-primary">Login As or Create New Admin Account</a>
+      {% endif %} 
+    </div>
+  {% endblock %}
 </body>
+
+
 </html>

@@ -1,11 +1,13 @@
 {% load socialaccount %}
 {% load bootstrap5 %}
+{% load static %}
 <html>
 <head>
   <title>FEEDback</title>
   {% bootstrap_css %}
   {% bootstrap_javascript %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -18,15 +20,15 @@
         <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{% url 'feedback:restaurant_list' %}">View Restaurant List</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'feedback:submit_restaurant' %}">Submit New Restaurant</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'feedback:submit_restaurant' %}">Submit a New Restaurant</a></li>
             {% if user.is_user %}
               <li class="nav-item dropdown me-auto">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   View Your
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLinkUser">
-                  <li><a class="dropdown-item" href="{% url 'feedback:review_list' %}">Reviews</a></li>
-                  <li><a class="dropdown-item" href="{% url 'feedback:user_submitted_restaurant_list' %}">Submitted Restaurants</a></li>
+                  <li class="text-center"><a class="dropdown-item" href="{% url 'feedback:review_list' %}">Reviews</a></li>
+                  <li class="text-center"><a class="dropdown-item" href="{% url 'feedback:user_submitted_restaurant_list' %}">Submitted Restaurants</a></li>
                 </ul>
               </li>
             {% endif %}
@@ -36,8 +38,8 @@
                   View Pending
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLinkAdmin">
-                  <li class="nav-item"><a class="nav-link" href="{% url 'feedback:approve_reviews' %}">Reviews</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url 'feedback:restaurant_list' %}">Restaurants</a></li>
+                  <li class="nav-item text-center"><a class="nav-link" href="{% url 'feedback:approve_reviews' %}">Reviews</a></li>
+                  <li class="nav-item text-center"><a class="nav-link" href="{% url 'feedback:approve_or_reject_restaurants' %}">Restaurants</a></li>
                 </ul>
               </li>
             {% endif %}
