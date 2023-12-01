@@ -319,3 +319,16 @@ class UserSumbittedRestaurantListView(View):
     def get(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
+    
+# ***************************************************************************************
+# *  REFERENCES
+# *  Title: django-allauth: Retrieve First/Last Names from FB, Twitter, Google
+# *  Author: Shacker
+# *  Date: December 3, 2013
+# *  URL: https://blog.birdhouse.org/2013/12/03/django-allauth-retrieve-firstlast-names-from-fb-twitter-google/
+# * 
+# *  Title: User Registration in Django using Google OAuth
+# *  Author: Geoffrey Mungai
+# *  Date: December 18, 2020
+# *  URL: https://www.section.io/engineering-education/django-google-oauth/
+# ***************************************************************************************  
