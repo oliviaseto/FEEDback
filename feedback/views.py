@@ -10,6 +10,8 @@ import urllib.request, json
 from django.core import serializers
 from django.core.serializers import serialize
 from django.http import JsonResponse
+from django.utils import timezone
+
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):
@@ -217,6 +219,7 @@ def approve_reviews(request):
         review = Review.objects.get(pk=review_id)
         review.approved = True
         review.not_approved = False
+        review.approved_at = timezone.now()  # Set the approval timestamp
         review.save()
 
         # Redirect to the same page 
@@ -278,6 +281,7 @@ def approve_or_reject_restaurants(request):
                 restaurant.approved = True
                 restaurant.not_approved = False
                 restaurant.is_rejected = False
+                restaurant.approved_at = timezone.now()  # Set the approval timestamp
             elif action == 'reject':
                 restaurant.approved = False
                 restaurant.is_rejected = True

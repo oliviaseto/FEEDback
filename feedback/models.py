@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import Avg, Count
+from django.utils import timezone
 
 class User(AbstractUser):
     is_user = models.BooleanField(default=False)
@@ -31,6 +32,8 @@ class Restaurant(models.Model):
     not_approved = models.BooleanField(default=True) 
     is_rejected = models.BooleanField(default=False)  
     admin_message = models.TextField(default="", blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    approved_at = models.DateTimeField(null=True, blank=True)
 
     def average_rating(self):
         reviews = Review.objects.filter(restaurant=self, approved=True).aggregate(average=Avg('rating'))
@@ -53,6 +56,8 @@ class Review(models.Model):
     not_approved = models.BooleanField(default=True) 
     is_rejected = models.BooleanField(default=False)  
     rating = models.IntegerField(default=1)
+    created_at = models.DateTimeField(default=timezone.now)
+    approved_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Review for {self.restaurant.name} by {self.user.username}"
