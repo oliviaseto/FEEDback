@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 
 app_name = 'feedback'
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="feedback/index.html")),
+    # path('', TemplateView.as_view(template_name="feedback/index.html")),
     path('admin/', admin.site.urls),
     path('feedback/', include("feedback.urls")),
     path('accounts/', include('allauth.urls'))
