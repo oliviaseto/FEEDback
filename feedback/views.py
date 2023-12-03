@@ -1,17 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpResponseRedirect
+from django.core.serializers import serialize
+from django.utils import timezone
 from .models import User, Restaurant, Review
 from .forms import RestaurantForm, ReviewForm, AdminMessageForm
 import urllib.request, json 
-from django.core import serializers
-from django.core.serializers import serialize
-from django.http import JsonResponse
-from django.utils import timezone
-
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):

@@ -9,11 +9,13 @@
   {% bootstrap_javascript %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+  {% block styles %}
+  {% endblock %}
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand">FEEDback</a>
+      <a class="navbar-brand" href="{% url 'feedback:restaurant_list' %}">FEEDback</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -50,7 +52,7 @@
       </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="container-fluid">
     {% block content %}
     {% endblock %}
   </div>
