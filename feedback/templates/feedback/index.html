@@ -58,10 +58,14 @@
                   <a href="{% url 'feedback:user_submitted_restaurant_list' %}" class="btn btn-primary">View Your Submitted Restaurants</a>
                 {% endif %} 
                 {% if user.is_admin %}
-                  <a href="{% url 'feedback:approve_reviews' %}" class="btn btn-primary">View Pending Reviews to Be Approved</a>
-                  <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Pending Restaurants to Be Approved</a>
-                  <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Restaurant List</a>
+                  <div class="mt-3"></div>
+                  <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Restaurant List</a></br>
+                  <div class="mt-3"></div>
                   <a href="{% url 'feedback:submit_restaurant' %}" class="btn btn-primary">Submit New Restaurant</a>
+                  <div class="mt-3"></div>
+                  <a href="{% url 'feedback:approve_reviews' %}" class="btn btn-primary">View Pending Reviews to Be Approved</a>
+                  <div class="mt-3"></div>
+                  <a href="{% url 'feedback:restaurant_list' %}" class="btn btn-primary">View Pending Restaurants to Be Approved</a>
                 {% endif %} 
                 <p class="mt-3"><a href="{% url 'feedback:logout' %}" class="btn btn-danger">Logout</a></p>
               {% else %}

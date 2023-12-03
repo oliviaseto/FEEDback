@@ -33,29 +33,26 @@
                     <p>Approved on: {{ restaurant.approved_at|date:"Y-m-d H:i" }}</p>
                 {% endif %}
 
-                
-                {% if user.is_user %}
-                    <div class="card mt-3">
-                        <div class="card-body text-center">
-                            <h2 class="card-title">Submit a Review:</h2>
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ review_form.as_p }}
-                                <div class="mb-3">
-                                    <label for="rating" class="form-label">Rating (1-5):</label>
-                                    <select name="rating" id="rating" class="form-select-sm" required>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </div>
-                                <input type="submit" value="Submit Review" class="btn btn-primary mt-2">
-                            </form>
-                        </div>
+                <div class="card mt-3">
+                    <div class="card-body text-center">
+                        <h2 class="card-title">Submit a Review:</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ review_form.as_p }}
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating (1-5):</label>
+                                <select name="rating" id="rating" class="form-select-sm" required>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <input type="submit" value="Submit Review" class="btn btn-primary mt-2">
+                        </form>
                     </div>
-                {% endif %}
+                </div>
                 
 
                 {% if message %}
