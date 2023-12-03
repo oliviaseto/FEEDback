@@ -1,15 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.http import HttpResponseRedirect
+from django.core.serializers import serialize
+from django.utils import timezone
 from .models import User, Restaurant, Review
 from .forms import RestaurantForm, ReviewForm, AdminMessageForm
 import urllib.request, json 
-from django.core import serializers
-from django.core.serializers import serialize
-from django.http import JsonResponse
 
 class CompleteGoogleOAuth2View(View):
     def get(self, request, user_type):
@@ -217,6 +215,7 @@ def approve_reviews(request):
         review = Review.objects.get(pk=review_id)
         review.approved = True
         review.not_approved = False
+        review.approved_at = timezone.now()  # Set the approval timestamp
         review.save()
 
         # Redirect to the same page 
@@ -278,6 +277,7 @@ def approve_or_reject_restaurants(request):
                 restaurant.approved = True
                 restaurant.not_approved = False
                 restaurant.is_rejected = False
+                restaurant.approved_at = timezone.now()  # Set the approval timestamp
             elif action == 'reject':
                 restaurant.approved = False
                 restaurant.is_rejected = True
@@ -315,3 +315,16 @@ class UserSumbittedRestaurantListView(View):
     def get(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
+    
+# ***************************************************************************************
+# *  REFERENCES
+# *  Title: django-allauth: Retrieve First/Last Names from FB, Twitter, Google
+# *  Author: Shacker
+# *  Date: December 3, 2013
+# *  URL: https://blog.birdhouse.org/2013/12/03/django-allauth-retrieve-firstlast-names-from-fb-twitter-google/
+# * 
+# *  Title: User Registration in Django using Google OAuth
+# *  Author: Geoffrey Mungai
+# *  Date: December 18, 2020
+# *  URL: https://www.section.io/engineering-education/django-google-oauth/
+# ***************************************************************************************  

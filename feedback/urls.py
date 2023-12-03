@@ -5,6 +5,7 @@ from django.contrib.auth import views as auth_views
 
 app_name = 'feedback'
 urlpatterns = [
+    path('', TemplateView.as_view(template_name="feedback/index.html"), name='index'),
     path('user-profile/', views.UserProfileView.as_view(), name='user_profile'),
     path('admin-profile/', views.AdminProfileView.as_view(), name='admin_profile'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),

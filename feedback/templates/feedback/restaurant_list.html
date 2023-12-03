@@ -9,6 +9,14 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'feedback/style.css' %}">
+    {% block styles %}
+    <style>
+        .col-md-4 {
+            overflow-y: auto;
+            max-height: calc(100vh - 100px); 
+        }
+    </style>
+    {% endblock %}
 </head>
 <body> 
     {% block content %}
@@ -36,20 +44,19 @@
                     <p>No restaurants available.</p>
                 {% endfor %}
             </div>
-
             <div class="col-md-8">
                 <div class="card">
-                    <div id="map" style="height: 600px;"></div>
+                    <div id="map" style="height: 500px;"></div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <script>
         function initMap() {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 15,
-                center: { lat: 38.0318784, lng: -78.5103819 }, // Default center of the map
+                center: { lat: 38.0336440, lng: -78.4986330 }, // Default center of the map
                 styles: [
                     {
                         featureType: "poi",
@@ -58,7 +65,7 @@
                     },
                 ]
             });
-
+    
             var restaurants = {{ restaurants_json|safe }};
             restaurants.forEach(function(restaurant) {
                 var restaurantLatLng = {
@@ -74,7 +81,24 @@
         }
         window.initMap = initMap;
     </script>
-
     {% endblock %}
 </body>
 </html>
+
+<!-- 
+***************************************************************************************
+*  REFERENCES
+*  Title: Embedding a map
+*  Author: Google Maps Platform
+*  URL: https://developers.google.com/maps/documentation/embed/embedding-map
+*
+*  Title: Markers
+*  Author: Google Maps Platform
+*  URL: https://developers.google.com/maps/documentation/javascript/markers#maps_marker_simple-javascript
+*
+*  Title: How to Safely Pass Data to JavaScript in a Django Template
+*  Author: Adam Johnson
+*  Date: October 6, 2022
+*  URL: https://adamj.eu/tech/2022/10/06/how-to-safely-pass-data-to-javascript-in-a-django-template/
+***************************************************************************************
+/ -->
