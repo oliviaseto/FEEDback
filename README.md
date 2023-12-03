@@ -8,17 +8,11 @@ Check it out here: https://project-a-19-feedback-e9d9adefdb3d.herokuapp.com/
 ## Key Features
 📱 User Registration and Authentication Through Google: Easily create an account and log in for a personalized experience.
 
-👤 User Profiles: Manage your info, view your reviews, and track favorite restaurants.
+👤 User Profiles: View your reviews / proposed restaurant additions and their statuses.
 
-🍽️ Restaurant Listings: Explore a variety of nearby restaurants by cuisine, location, and price range.
-
-🔍 Search and Filter Options: Refine restaurant choices based on specific criteria.
-
-🗺️ Navigation Assistance: Get directions to nearby restaurants using Google Maps.
+🍽️ Restaurant Listings: Explore a variety of nearby restaurants and get directions using Google Maps.
 
 🌟 User-Generated Reviews: Share your dining experiences with ratings and detailed reviews.
-
-📊 Rating and Ranking System: Quickly find top-rated restaurants based on user reviews.
 
 ## Built With
 * Python
@@ -27,6 +21,3 @@ Check it out here: https://project-a-19-feedback-e9d9adefdb3d.herokuapp.com/
 * HTML / CSS
 * JavaScript
 * Heroku 
-  
-## Authors
-Olivia Seto
